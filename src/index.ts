@@ -10,8 +10,8 @@ dotenv.config({
 
 (async () => {
 	try {
-		console.log(process.env.MONGODB_URI);
 		await mongoose.connect(`${process.env.MONGODB_URI}/${DB_name}`);
+		console.log("Connected to MongoDB");
 
 		// App listening to requests
 		app.listen(process.env.PORT, () => {
