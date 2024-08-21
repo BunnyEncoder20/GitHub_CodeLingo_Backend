@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express, { Application } from "express";
-import connectDB from "@/db"
+import connectDB from "./db/connect"
 
 
 const app: Application = express();
@@ -10,6 +10,5 @@ dotenv.config({
 
 
 // Connecting to the db
-console.log("Hello there !")
 connectDB()
 
