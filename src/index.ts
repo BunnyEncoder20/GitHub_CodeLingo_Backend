@@ -1,9 +1,7 @@
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import express, { Application } from "express";
-import connectDB from "./db/index.js";
+import connectDB from "@/db"
 
-import { DB_name } from "./constants.js";
 
 const app: Application = express();
 dotenv.config({
@@ -12,5 +10,6 @@ dotenv.config({
 
 
 // Connecting to the db
+console.log("Hello there !")
 connectDB()
 
