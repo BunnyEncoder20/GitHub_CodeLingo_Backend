@@ -61,12 +61,45 @@ UserSchema.pre("save", async function (next): Promise<void> {
     next();
 })
 
-// Custom Methods of UserSchema
+// Custom Methods of UserSchema (even in these we would always use normal functions as these too use the THIS context)
 UserSchema.methods.isPasswordCorrect = async function (password:string): Promise<boolean> {
     return await bcrypt.compare(password, this.password);
 }
 
-UserSchema.methods.generateAccessToken()
+UserSchema.methods.generateAccessToken = function () {
+    jwt.sign(
+        // Payload
+        {
+        _id: this._id,
+        email: this.email
+        },
+
+        // Access Token secret
+        process.env.ACCESS_TOKEN_SECRET,
+        
+        // Expiry
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        } 
+    )
+}
+
+UserSchema.methods.generateRefreshToken = function () {
+    jwt.sign(
+        // Payload
+        {
+        _id: this._id,
+        },
+
+        // Access Token secret
+        process.env.REFRESH_TOKEN_SECRET,
+        
+        // Expiry
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        } 
+    )
+}
 
 
 const UserModel = mongoose.model<User>("User", UserSchema) ;

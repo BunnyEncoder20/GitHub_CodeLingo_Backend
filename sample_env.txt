@@ -1,0 +1,5 @@
+ACCESS_TOKEN_SECRET=CjAf@K6!:,721Qf-M/]R*d3CpGirN&LU%.6V{Q;,&D6YgTdmJ
+REFRESH_TOKEN_SECRET=Mik9/g%J?VM*J!E*kn.8HvLF&.:Wr3fN/X9RQK{aD]ZAv!d
+
+ACCESS_TOKEN_EXPIRY = 1h     # 1 hour expiry
+REFRESH_TOKEN_EXPIRY = 30d   # 30 days expiry
