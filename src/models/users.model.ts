@@ -1,6 +1,7 @@
 import mongoose, { Schema , Document } from 'mongoose';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { default_secret } from '../constants';
 
 export interface User extends Document {
     username : string;
@@ -75,7 +76,7 @@ UserSchema.methods.generateAccessToken = function () {
         },
 
         // Access Token secret
-        process.env.ACCESS_TOKEN_SECRET,
+        process.env.ACCESS_TOKEN_SECRET || default_secret,
         
         // Expiry
         {
@@ -92,7 +93,7 @@ UserSchema.methods.generateRefreshToken = function () {
         },
 
         // Access Token secret
-        process.env.REFRESH_TOKEN_SECRET,
+        process.env.REFRESH_TOKEN_SECRET || default_secret,
         
         // Expiry
         {
