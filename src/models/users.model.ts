@@ -49,7 +49,23 @@ const UserSchema : Schema<User> = new Schema({
 });
 
 
-// Methods of UserSchema (For authetication)
+// MongoDB hooks
+// UserSchema.pre("save", () => {}) Do not use this kind cause arrow functions do not have proper THIS context hence can cause errors as "pre" requires the UserSchema
+UserSchema.pre("save", async function (next): Promise<void> {
+    if (!this.isModified("password")){
+        return next();
+    }
+
+    // Else if password has changed, encrypt it 
+    this.password = await bcrypt.hash(this.password,10);
+    next();
+})
+
+// Custom Methods of UserSchema
+UserSchema.methods.isPasswordCorrect = async function (password:string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
+}
+
 UserSchema.methods.generateAccessToken()
 
 
