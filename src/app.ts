@@ -6,7 +6,7 @@ const app: Application = express();
 // Middlewares
 app.use(
 	cors({
-		origin: process.env.CORS_LIST,
+		origin: process.env.CORS_ORIGIN_LIST,
 		credentials: true,
 	})
 );

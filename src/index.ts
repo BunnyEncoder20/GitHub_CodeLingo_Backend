@@ -8,8 +8,18 @@ dotenv.config({
 });
 
 // Connecting to the db
-connectDB();
+connectDB()
+.then(() => {
 
-app.listen(process.env.PORT || 8080, () => {
-	console.log(`[server] CodeLingo server is running on port:${process.env.PORT || 8080}`);
-});
+	// listening for any errors while starting server
+	app.on("error",(err) => {
+		console.error("An error occurred while starting the server. Server start aborted : ",err)
+	})
+
+	// Listening for requests
+	app.listen(process.env.PORT || 8080, () => {
+		console.log(`[server] CodeLingo server is running on port:${process.env.PORT || 8080}`);
+	});
+})
+.catch()
+
