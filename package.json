@@ -1,7 +1,8 @@
 {
   "name": "node_ts_restful_api_setup",
   "version": "1.0.0",
-  "description": "",
+  "description": "Flagship Project",
+
   "main": "index.js",
   "scripts": {
     "start": "tsc",
