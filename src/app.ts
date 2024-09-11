@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 
-const app: Application = express();
+const app:Application = express();
 
 // Middlewares
 app.use(
