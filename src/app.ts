@@ -1,6 +1,7 @@
-import express, { Application } from "express";
+import express, { Application,Request,Response,NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { StatusCodes } from "./constants.js"
 
 const app:Application = express();
 
@@ -39,6 +40,14 @@ app.use(
 
 // for all unmatched routes
 
+
+
 // Global Error handling middleware
+app.use(
+	(err:any, req:Request, res:Response, next:NextFunction) => {
+		console.error(err.stack);
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("There was internal server Error!");
+	}
+)
 
 export default app;
