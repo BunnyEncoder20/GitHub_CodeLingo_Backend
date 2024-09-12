@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 
 const app:Application = express();
@@ -12,6 +13,10 @@ app.use(
 );
 
 app.use(
+	cookieParser()
+)
+
+app.use(
 	express.json({
 		limit: "16kb",
 	})
@@ -23,6 +28,10 @@ app.use(
 		limit: "16kb",
 	})
 );
+
+app.use(
+	express.static("public")
+)
 
 // Importing Rotues
 
