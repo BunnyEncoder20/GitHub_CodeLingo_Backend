@@ -7,10 +7,10 @@ export interface User extends Document {
     username : string;
     email : string;
     password : string;
-    verificationCode : string;
-    verificationCodeExpiry : Date;
+    avatar_url : string;
     isVerified : boolean;
     isAcceptingNotifications : boolean;
+    lang_studying : Array<string>;
     refreshToken:string;
     generateAccessToken:Function;
     generateRefreshToken:Function;
@@ -36,6 +36,17 @@ const UserSchema : Schema<User> = new Schema({
     password : {
         type : String,
         required : [true, "password is required"]
+    },
+    avatar_url : {
+        type : String,      // cloudinary url
+    },
+    isVerified : {
+        type : Boolean,
+        default : false
+    },
+    lang_studying : {
+        type : [String],
+        default : []
     },
     isAcceptingNotifications : {
         type : Boolean,
