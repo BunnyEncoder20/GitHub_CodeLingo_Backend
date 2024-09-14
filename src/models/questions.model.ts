@@ -1,11 +1,35 @@
 import mongoose, { Schema , Document } from 'mongoose';
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { default_secret } from '../constants';
 
-export interface User extends Document {
-    
+export interface Question extends Document {
+    language : 'python' | 'javascript' | 'java' | 'c++';
+    question : string;
+    answer : string;
+    explaination : string;
+    tags : Array<string>;
 }
 
-const UserModel = mongoose.model<User>("User", UserSchema) ;
-export default UserModel;
+const QuestionSchema : Schema<Question> = new Schema({
+    language : {
+        type : String,
+        required : [true, "All questions must belong to any one of the languages"],
+        enum: ['python', 'javascript', 'java', 'c++'],
+    },
+    question : {
+        type : String,
+        required : [true, "question is obviously required"]
+    },
+    answer : {
+        type : String,
+        required : [true, "answer is obviously required"]
+    },
+    explaination : {
+        type : String
+    },
+    tags : {
+        type : [String],
+        default : []
+    }
+})
+
+const QuestionModel = mongoose.model<Question>("Question", QuestionSchema) ;
+export default QuestionModel;
