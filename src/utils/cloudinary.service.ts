@@ -25,7 +25,14 @@ async function upload2Cloudinary(localFilePath : string, retryAttempt : number =
 
     try {
         // uploading the image from local file path 
-        const uploadResult = cloudinary.uploader.upload(localFilePath,{public_id:"profile_image"});
+        const uploadResult = cloudinary.uploader.upload(localFilePath,{
+            public_id:"profile_image",
+            resource_type:"image",
+        });
+
+        // delete the image from local storage after uploading to cloudinary
+        fs.unlinkSync(localFilePath);
+
         console.log("⬆️ Uploaded asset to cloudinary server successfully\n", uploadResult);
         return uploadResult;
     }
@@ -45,6 +52,8 @@ async function upload2Cloudinary(localFilePath : string, retryAttempt : number =
 
     }
 }
+
+export default upload2Cloudinary
 
 
 
