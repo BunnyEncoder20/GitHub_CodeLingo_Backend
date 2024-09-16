@@ -6,7 +6,7 @@ dotenv.config({
 	path: "./.env",
 });
 
-// Connecting to the db
+// Setting up Up link to Database
 connectDB()
 .then(() => {
 

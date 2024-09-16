@@ -31,6 +31,9 @@ const QuestionSchema : Schema<Question> = new Schema({
         type : [String],
         default : []
     }
+},
+{
+    timestamps : true
 })
 
 const QuestionModel = mongoose.model<Question>("Question", QuestionSchema) ;

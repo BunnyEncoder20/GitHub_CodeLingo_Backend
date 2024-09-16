@@ -33,6 +33,9 @@ const User_Question_Schema : Schema<user_question_stats> = new Schema({
         type : Boolean,
         required : true
     }
+},
+{
+    timestamps : true
 })
 
 const User_Question_Model = mongoose.model<user_question_stats>("User_Question", User_Question_Schema);

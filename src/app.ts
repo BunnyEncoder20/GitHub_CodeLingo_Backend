@@ -46,7 +46,7 @@ app.use(
 app.use(
 	(err:any, req:Request, res:Response, next:NextFunction) => {
 		console.error(err.stack);
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("[server] 😞 Internal server Error!");
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("[Global Error Handler] 😞 Internal server Error!");
 	}
 )
 
