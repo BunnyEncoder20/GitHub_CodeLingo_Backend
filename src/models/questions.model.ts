@@ -6,6 +6,8 @@ export interface Question extends Document {
     answer : string;
     explaination : string;
     tags : Array<string>;
+    createdAt? : Date;
+    updatedAt? : Date;
 }
 
 const QuestionSchema : Schema<Question> = new Schema({

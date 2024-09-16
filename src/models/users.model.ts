@@ -14,6 +14,8 @@ export interface User extends Document {
     refreshToken:string;
     generateAccessToken:Function;
     generateRefreshToken:Function;
+    createdAt? : Date;
+    updatedAt? : Date;
 }
 
 const UserSchema : Schema<User> = new Schema({
