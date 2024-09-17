@@ -38,7 +38,7 @@ app.use(
 import user_router from "./routes/user.routes";
 
 // Routes forwarding
-app.use("api/v1/users", user_router);
+app.use("/api/v1/users", user_router);
 
 // for all unmatched routes
 
