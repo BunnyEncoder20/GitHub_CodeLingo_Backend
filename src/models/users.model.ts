@@ -81,7 +81,7 @@ UserSchema.methods.isPasswordCorrect = async function (password:string): Promise
 }
 
 UserSchema.methods.generateAccessToken = function () {
-    jwt.sign(
+    return jwt.sign(
         // Payload
         {
         _id: this._id,
@@ -99,7 +99,7 @@ UserSchema.methods.generateAccessToken = function () {
 }
 
 UserSchema.methods.generateRefreshToken = function () {
-    jwt.sign(
+    return jwt.sign(
         // Payload
         {
         _id: this._id,
