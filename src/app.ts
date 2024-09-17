@@ -1,7 +1,7 @@
 import express, { Application,Request,Response,NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { StatusCodes } from "./constants.js"
+import { StatusCodes } from "./constants";
 
 const app:Application = express();
 

@@ -17,7 +17,7 @@ connectDB()
 
 	// Listening for requests
 	app.listen(process.env.PORT || 8080, () => {
-		console.log(`[server] ☕ CodeLingo server is running on port:${process.env.PORT || 8080}`);
+		console.log(`[server] 😮‍💨 CodeLingo server is running on port:${process.env.PORT || 8080}`);
 	});
 })
 .catch((err) => {
