@@ -1,17 +1,21 @@
-import multer from "multer";
+import multer, { StorageEngine, FileFilterCallback } from "multer";
+import { Request } from "express";
+// import { v4 as uuidv4 } from "uuid";  // Use for generating unique IDs
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '../../public/temp')
+// Define the storage with type safety
+const storage: StorageEngine = multer.diskStorage({
+    destination: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void): void {
+        cb(null, '../../public/temp');
     },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '_' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '_' + uniqueSuffix)
-        console.log(file)
-        console.log(`📁 Recieved ${file.originalname} for upload`)
+    filename: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void): void {
+        const uniqueSuffix = Date.now() + '_' + Math.round(Math.random() * 1E9);
+        cb(null, `${file.fieldname}_${uniqueSuffix}`);
+        console.log(file);
+        console.log(`📁 Received ${file.originalname} for upload`);
     }
-})
+});
 
-export const upload = multer({ 
-    storage: storage 
-})
+// Export the multer upload function with type safety
+export const upload = multer({
+    storage: storage
+});
