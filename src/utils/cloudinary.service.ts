@@ -28,6 +28,11 @@ async function upload2Cloudinary(localFilePath : string, retryAttempt : number =
         const uploadResult = cloudinary.uploader.upload(localFilePath,{
             public_id:"profile_image",
             resource_type:"image",
+            transformations:[
+                { width:400, height:400, crop:"fill" , gravity:"face" },    // Cropping to sqaure around the face 
+                { radius:"max" },                                           // Making the image round for the profile image holder
+                { fetch_format:"auto", quality:"auto" }                     // Auto format and quality for optimizations
+            ]
         });
 
         // delete the image from local storage after uploading to cloudinary
@@ -95,7 +100,7 @@ export default upload2Cloudinary
     const autoCropUrl = cloudinary.url('shoes', {
         crop: 'auto',
         gravity: 'auto',
-        width: 500,
+        width: 500,zz
         height: 500,
     });
     
