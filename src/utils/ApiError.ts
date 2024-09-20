@@ -5,7 +5,7 @@ export class ApiError extends Error {
     public stackTrace?: string;
 
     constructor(
-        statusCode: number = 500,
+        statusCode: number,
         message: string,
         stackTrace?: string
     ){

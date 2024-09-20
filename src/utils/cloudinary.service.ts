@@ -19,13 +19,13 @@ const delay = (ms : number) => {
 
 
 // Function to upload image to cloundinary servers
-async function upload2Cloudinary(localFilePath : string, retryAttempt : number = 0) : Promise<any> {
+export async function upload2Cloudinary(localFilePath : string, retryAttempt : number = 0) : Promise<any> {
     const maxRetries = 3;
     const retryDelays = [30*1000, 60*1000, 300*1000, 600*1000];     // Delays of 30s, 1m, 5m, 10m respectively
 
     try {
         // uploading the image from local file path 
-        const uploadResult = cloudinary.uploader.upload(localFilePath,{
+        const uploadResult = await cloudinary.uploader.upload(localFilePath,{
             public_id:"profile_image",
             resource_type:"image",
             transformations:[
@@ -38,7 +38,7 @@ async function upload2Cloudinary(localFilePath : string, retryAttempt : number =
         // delete the image from local storage after uploading to cloudinary
         fs.unlinkSync(localFilePath);
 
-        console.log("⬆️ Uploaded asset to cloudinary server successfully\n", uploadResult);
+        console.log("🟩 Uploaded asset to cloudinary server successfully\n", uploadResult);
         return uploadResult;
     }
     catch(error){
@@ -58,7 +58,6 @@ async function upload2Cloudinary(localFilePath : string, retryAttempt : number =
     }
 }
 
-export default upload2Cloudinary
 
 
 

@@ -8,7 +8,7 @@ const zod_UserInputSchema = z.object({
     isVerified: z.boolean().optional().default(false),
     lang_studying: z.array(z.string()),
     isAcceptingNotifications: z.boolean().optional().default(true),
-    refreshToken: z.string().optional(),
+    refreshToken: z.string().optional(),    
 });
 
 // Infer the TypeScript type from the Zod schema
