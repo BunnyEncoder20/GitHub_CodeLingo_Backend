@@ -23,6 +23,8 @@ export async function upload2Cloudinary(localFilePath : string, retryAttempt : n
     const maxRetries = 3;
     const retryDelays = [30*1000, 60*1000, 300*1000, 600*1000];     // Delays of 30s, 1m, 5m, 10m respectively
 
+    console.log(`secrets:\napi_secrets:${process.env.CLOUDINARY_API_SECRET}\napi_key:${process.env.CLOUDINARY_API_KEY}`)
+
     try {
         // uploading the image from local file path 
         const uploadResult = await cloudinary.uploader.upload(localFilePath,{
@@ -32,17 +34,20 @@ export async function upload2Cloudinary(localFilePath : string, retryAttempt : n
                 { width:400, height:400, crop:"fill" , gravity:"face" },    // Cropping to sqaure around the face 
                 { radius:"max" },                                           // Making the image round for the profile image holder
                 { fetch_format:"auto", quality:"auto" }                     // Auto format and quality for optimizations
-            ]
+            ],
+            api_key: process.env.CLOUDINARY_API_KEY, 
+            api_secret: process.env.CLOUDINARY_API_SECRET,
+            cloud_name: process.env.CLOUD_NAME, 
         });
 
         // delete the image from local storage after uploading to cloudinary
         fs.unlinkSync(localFilePath);
 
-        console.log("🟩 Uploaded asset to cloudinary server successfully\n", uploadResult);
+        console.log("🟩 [cloudinary] Uploaded asset to cloudinary server successfully\n", uploadResult);
         return uploadResult;
     }
     catch(error){
-        console.error("❗ Upload failed:",error)
+        console.error("❗ [cloudinary] Upload failed:",error)
 
         if (retryAttempt < maxRetries) {
             const retryDelay = retryDelays[retryAttempt];
@@ -51,7 +56,7 @@ export async function upload2Cloudinary(localFilePath : string, retryAttempt : n
             await delay(retryDelay);
             return upload2Cloudinary(localFilePath, retryAttempt + 1);
         } else {
-            console.error("❌ Upload failed after all retry attempts");
+            console.error("❌ [cloudinary]  Upload failed after all retry attempts");
             throw error;
         }
 

@@ -2,9 +2,12 @@ import dotenv from "dotenv";
 import connectDB from "./db/connect";
 import app from "./app";
 
+// Setting up environment variables
 dotenv.config({
 	path: "./.env",
 });
+
+
 
 // Setting up Up link to Database
 connectDB()

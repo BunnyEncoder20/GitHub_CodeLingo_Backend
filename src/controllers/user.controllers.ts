@@ -13,14 +13,14 @@ const register_user = async_handler(async (req, res) => {
 
     // TODO:  validation of data (use ZOD)
     const validated_user_input = zod_UserInputSchema.safeParse(req.body)
-    console.log(validated_user_input)
+    console.log("❗ [controller] \n",validated_user_input)
 
     // TODO:  check if user already exists
     const exists_user = await UserModel.findOne({
         $or : [{ username },{ email }]
     })
     if (exists_user) {
-        throw new ApiError(409, "[controller] user already exists")
+        throw new ApiError(StatusCodes.BAD_REQUEST, "🔴 [controller] user already exists")
     }
 
     // TODO:  check for images and upload them to cloudinary. (Check both files in server and then again at cloudinary)
@@ -31,7 +31,7 @@ const register_user = async_handler(async (req, res) => {
     }
 
     const upload_result = await upload2Cloudinary(avatar_local_path)
-    // let avatar_url = upload_result.url
+    console.log("🟢 [controller]\n",upload_result)
 
     // TODO:  create new user - create a new user entry in db
     let new_user : zod_UserInputType = {
@@ -47,13 +47,13 @@ const register_user = async_handler(async (req, res) => {
 
     const created_user = await UserModel.create(new_user);
     if (! await UserModel.findById(created_user._id) ){
-        throw new ApiError(500, "[controller] user not created")
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "[controller] user not created")
     }
     console.log(created_user)
 
 
     // TODO:  send the user data back (without the password and refreshToken field)
-    // TODO:  send response
+    // TODO:  send response 
 
     return res.status(StatusCodes.CREATED).json(
         new ApiResponse(true, StatusCodes.CREATED, "user created successfully", created_user)
