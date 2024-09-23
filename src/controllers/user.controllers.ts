@@ -8,12 +8,12 @@ import { zod_UserInputSchema, zod_UserInputType } from "../models/zod.models";
 import UserModel from "../models/users.model";
 
 const register_user = async_handler(async (req, res) => {
-    // TODO:  deconstruct data coming from the frontend (username, email, password, avatar_url, isVerified, lang_studying, isAcceptingNotifications, refreshToken)
-    const {username, email, password, isVerified, lang_studying, isAcceptingNotifications} = req.body
-
     // TODO:  validation of data (use ZOD)
     const validated_user_input = zod_UserInputSchema.safeParse(req.body)
     console.log("❗ [controller] \n",validated_user_input)
+
+    // TODO:  deconstruct data coming from the frontend (username, email, password, avatar_url, isVerified, lang_studying, isAcceptingNotifications, refreshToken)
+    const {username, email, password, isVerified, lang_studying, isAcceptingNotifications} = req.body
 
     // TODO:  check if user already exists
     const exists_user = await UserModel.findOne({
@@ -47,9 +47,9 @@ const register_user = async_handler(async (req, res) => {
 
     const created_user = await UserModel.create(new_user);
     if (! await UserModel.findById(created_user._id) ){
-        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "[controller] user not created")
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "🟥 [controller] user not created")
     }
-    console.log(created_user)
+    console.log("💚 [controller]\n",created_user)
 
 
     // TODO:  send the user data back (without the password and refreshToken field)
