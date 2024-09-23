@@ -1,4 +1,4 @@
-import multer, { StorageEngine, FileFilterCallback } from "multer";
+import multer, { StorageEngine } from "multer";
 import { Request } from "express";
 // import { v4 as uuidv4 } from "uuid";  // Use for generating unique IDs
 

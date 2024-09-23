@@ -1,7 +1,7 @@
 import { async_handler } from "../utils/async_handler";
 import { ApiResponse } from "../utils/ApiResponse";
-import { ApiError } from "utils/ApiError";
-import { upload2Cloudinary } from "utils/cloudinary.service";
+import { ApiError } from "../utils/ApiError";
+import { upload2Cloudinary } from "../utils/cloudinary.service";
 import { StatusCodes } from "../constants";
 import { zod_UserInputSchema, zod_UserInputType } from "../models/zod.models";
 
@@ -24,7 +24,7 @@ const register_user = async_handler(async (req, res) => {
     }
 
     // TODO:  check for images and upload them to cloudinary. (Check both files in server and then again at cloudinary)
-    const avatar_local_path = req.file?.avatar_img[0]?.path
+    const avatar_local_path = req.file?.path
     console.log(req.file)
     if (!avatar_local_path) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "[controller] avatar image local path not found. Check if the file was uploaded to the server")
