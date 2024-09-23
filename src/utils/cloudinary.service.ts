@@ -23,8 +23,6 @@ export async function upload2Cloudinary(localFilePath : string, retryAttempt : n
     const maxRetries = 3;
     const retryDelays = [30*1000, 60*1000, 300*1000, 600*1000];     // Delays of 30s, 1m, 5m, 10m respectively
 
-    console.log(`secrets:\napi_secrets:${process.env.CLOUDINARY_API_SECRET}\napi_key:${process.env.CLOUDINARY_API_KEY}`)
-
     try {
         // uploading the image from local file path 
         const uploadResult = await cloudinary.uploader.upload(localFilePath,{
@@ -43,8 +41,18 @@ export async function upload2Cloudinary(localFilePath : string, retryAttempt : n
         // delete the image from local storage after uploading to cloudinary
         fs.unlinkSync(localFilePath);
 
-        console.log("🟩 [cloudinary] Uploaded asset to cloudinary server successfully\n", uploadResult);
-        return uploadResult;
+        // Filter the sensitive data out, only return required fields
+        const filteredUploadResult = {
+            url: uploadResult.url,
+            public_id: uploadResult.public_id,
+            secure_url: uploadResult.secure_url,
+            format: uploadResult.format,
+            width: uploadResult.width,
+            height: uploadResult.height
+        };
+
+        console.log("🟩 [cloudinary] Uploaded asset to cloudinary server successfully\nUpload Results : ",filteredUploadResult);
+        return filteredUploadResult;
     }
     catch(error){
         console.error("❗ [cloudinary] Upload failed:",error)

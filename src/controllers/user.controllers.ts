@@ -2,18 +2,31 @@ import { async_handler } from "../utils/async_handler";
 import { ApiResponse } from "../utils/ApiResponse";
 import { ApiError } from "../utils/ApiError";
 import { upload2Cloudinary } from "../utils/cloudinary.service";
-import { StatusCodes } from "../constants";
-import { zod_UserInputSchema, zod_UserInputType } from "../models/zod.models";
+import { StatusCodes,default_avatar_url } from "../constants";
+import { zod_RawUserData, zod_RawUserType, zod_UserInputSchema, zod_UserInputType } from "../models/zod.models";
 
 import UserModel from "../models/users.model";
 
 const register_user = async_handler(async (req, res) => {
-    // TODO:  validation of data (use ZOD)
-    const validated_user_input = zod_UserInputSchema.safeParse(req.body)
-    console.log("❗ [controller] \n",validated_user_input)
 
     // TODO:  deconstruct data coming from the frontend (username, email, password, avatar_url, isVerified, lang_studying, isAcceptingNotifications, refreshToken)
-    const {username, email, password, isVerified, lang_studying, isAcceptingNotifications} = req.body
+    const {username, email, password, isVerified, lang_studying, isAcceptingNotifications,raw,bool} = req.body
+
+
+    // TODO:  validation of raw input data (use ZOD)
+    const raw_user_data : zod_RawUserType = {
+        username : username.toLowerCase(),
+        email : email,
+        password : password,
+        isVerified : Boolean(isVerified),
+        lang_studying : lang_studying.split(",").map((lang:string) => lang.trim()),
+        isAcceptingNotifications : Boolean(isAcceptingNotifications)
+    }
+    const validated_raw_user_data = zod_RawUserData.safeParse(raw_user_data)
+    if (!validated_raw_user_data.success) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "🔴 [controller] invalid user data")
+    }
+     
 
     // TODO:  check if user already exists
     const exists_user = await UserModel.findOne({
@@ -25,28 +38,32 @@ const register_user = async_handler(async (req, res) => {
 
     // TODO:  check for images and upload them to cloudinary. (Check both files in server and then again at cloudinary)
     const avatar_local_path = req.file?.path
-    console.log(req.file)
+    console.log("",req.file)
     if (!avatar_local_path) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "[controller] avatar image local path not found. Check if the file was uploaded to the server")
     }
 
     const upload_result = await upload2Cloudinary(avatar_local_path)
-    console.log("🟢 [controller]\n",upload_result)
+    if (!upload_result) {
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "🟥 [controller] cloudinary upload failed")
+    }
 
-    // TODO:  create new user - create a new user entry in db
+    // TODO:  create new user (new user => generate refresh token => save to user)
     let new_user : zod_UserInputType = {
         username: username.toLowerCase(),
         email: email,
         password: password,
-        // TODO: add a default profile image path here (maybe add that in the constants file)
-        avatar_url: upload_result?.url || "/default/profile/pic/image/path/here",
+        avatar_url: upload_result?.url || default_avatar_url,
         isVerified: isVerified,
         lang_studying: lang_studying,
         isAcceptingNotifications: isAcceptingNotifications
     };
 
     const created_user = await UserModel.create(new_user);
-    if (! await UserModel.findById(created_user._id) ){
+    created_user.refreshToken = created_user.generateRefreshToken();
+    await created_user.save();
+
+    if ( !created_user ){
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "🟥 [controller] user not created")
     }
     console.log("💚 [controller]\n",created_user)
@@ -54,9 +71,16 @@ const register_user = async_handler(async (req, res) => {
 
     // TODO:  send the user data back (without the password and refreshToken field)
     // TODO:  send response 
-
+    const filtered_userdata = {
+        username: created_user.username,
+        email: created_user.email,
+        avatar_url: created_user.avatar_url,
+        isVerified: created_user.isVerified,
+        lang_studying: created_user.lang_studying,
+        isAcceptingNotifications: created_user.isAcceptingNotifications
+    }
     return res.status(StatusCodes.CREATED).json(
-        new ApiResponse(true, StatusCodes.CREATED, "user created successfully", created_user)
+        new ApiResponse(true, StatusCodes.CREATED, "user created successfully", filtered_userdata)
     )
 
 });

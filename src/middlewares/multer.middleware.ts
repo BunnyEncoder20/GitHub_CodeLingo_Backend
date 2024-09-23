@@ -12,8 +12,8 @@ const storage: StorageEngine = multer.diskStorage({
     filename: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void): void {
         const uniqueSuffix = Date.now() + '_' + Math.round(Math.random() * 1E9);
         cb(null, `${file.fieldname}_${uniqueSuffix}`);
-        console.log("[middlware] ",file);
-        console.log(`[middlware] 📁 Received ${file.originalname} for upload`);
+        console.log("[middlware] file detials : ",file);
+        console.log(`[middlware] 📁 Received ${file.originalname} for upload to local server`);
     }
 });
 

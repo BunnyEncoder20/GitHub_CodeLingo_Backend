@@ -1,7 +1,7 @@
 import mongoose, { Schema , Document } from 'mongoose';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { default_secret } from '../constants';
+import { default_jwt_secret } from '../constants';
 
 export interface User extends Document {
     username : string;
@@ -84,12 +84,12 @@ UserSchema.methods.generateAccessToken = function () : string {
     return jwt.sign(
         // Payload
         {
-        _id: this._id,
-        email: this.email
+            _id: this._id,
+            email: this.email
         },
 
         // Access Token secret
-        process.env.ACCESS_TOKEN_SECRET || default_secret,
+        process.env.ACCESS_TOKEN_SECRET || default_jwt_secret,
         
         // Expiry
         {
@@ -102,11 +102,11 @@ UserSchema.methods.generateRefreshToken = function () : string {
     return jwt.sign(
         // Payload
         {
-        _id: this._id,
+            _id: this._id,
         },
 
         // Access Token secret
-        process.env.REFRESH_TOKEN_SECRET || default_secret,
+        process.env.REFRESH_TOKEN_SECRET || default_jwt_secret,
         
         // Expiry
         {
