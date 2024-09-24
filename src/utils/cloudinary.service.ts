@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import fs from "fs" 
+import path from "path"
 
 
 // Actual Funciton to upload image
@@ -39,7 +40,13 @@ export async function upload2Cloudinary(localFilePath : string, retryAttempt : n
         });
 
         // delete the image from local storage after uploading to cloudinary
-        fs.unlinkSync(localFilePath);
+        fs.unlink(path.resolve(localFilePath), (err) => {
+            if (err) {
+                console.error("❗ [cloudinary] Error deleting local file:", err);
+            } else {
+                console.log("🗑️ [cloudinary] Local file deleted successfully");
+            }
+        });
 
         // Filter the sensitive data out, only return required fields
         const filteredUploadResult = {
