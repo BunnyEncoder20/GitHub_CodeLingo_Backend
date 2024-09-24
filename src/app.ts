@@ -55,10 +55,11 @@ app.use("/api/v1/users", user_router);
 // Global Error Handler
 app.use(
 	(err: any, req: Request, res: Response, next: NextFunction) => {
-		console.error(err.stack);
+		console.error(err);
 
 		// If it's an ApiError, return the proper status code and message
 		if (err instanceof ApiError) {
+			console.log("[Global Error Handler] It is a ApiError class instance");
 			return res.status(err.statusCode).json(err);
 		}
 
@@ -73,7 +74,7 @@ app.use(
 		}
 
 		// Otherwise, return a generic internal server error
-		const apiResponse = new ApiResponse(false, StatusCodes.INTERNAL_SERVER_ERROR, "[Global Error Handler] 😞 Internal server error");
+		const apiResponse = new ApiResponse(false, StatusCodes.INTERNAL_SERVER_ERROR, "[Global Error Handler] 😞 Internal server error",err);
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(apiResponse);
 	}
 );

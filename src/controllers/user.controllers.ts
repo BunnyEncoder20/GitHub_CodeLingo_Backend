@@ -9,11 +9,11 @@ import UserModel from "../models/users.model";
 
 const register_user = async_handler(async (req, res) => {
 
-    // TODO:  deconstruct data coming from the frontend (username, email, password, avatar_url, isVerified, lang_studying, isAcceptingNotifications, refreshToken)
+    // DONE: deconstruct data from req.body
     const {username, email, password, isVerified, lang_studying, isAcceptingNotifications,raw,bool} = req.body
 
 
-    // TODO:  validation of raw input data (use ZOD)
+    // DONE:  validation of raw input data (use ZOD)
     const raw_user_data : zod_RawUserType = {
         username : username.toLowerCase(),
         email : email,
@@ -25,7 +25,7 @@ const register_user = async_handler(async (req, res) => {
     zod_RawUserData.parse(raw_user_data)
      
 
-    // TODO:  check if user already exists
+    // DONE:  check if user already exists
     const exists_user = await UserModel.findOne({
         $or : [{ username },{ email }]
     })
