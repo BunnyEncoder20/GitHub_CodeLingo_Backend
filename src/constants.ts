@@ -1,7 +1,7 @@
 // Constant variables
 const DB_name: string = "Production";
 const default_jwt_secret: string = "Er*}?=jA+}2,aQ=uX*+_WF8GFuUp5_SVM#PR+EeH}WW%F$}A&=";
-const default_avatar_url: string = 'http://res.cloudinary.com/dyadl5sna/image/upload/v1727098885/profile_image.jpg';
+const default_avatar_url: string = 'https://res.cloudinary.com/dyadl5sna/image/upload/v1727111540/profile_image.jpg';
 
 // Enums
 enum StatusCodes {
