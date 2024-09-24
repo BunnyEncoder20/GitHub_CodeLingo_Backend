@@ -2,6 +2,8 @@ import express, { Application,Request,Response,NextFunction } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { StatusCodes } from "./constants";
+import { ApiError } from "./utils/ApiError";
+import { ApiResponse } from "./utils/ApiResponse";
 
 const app:Application = express();
 
@@ -34,6 +36,9 @@ app.use(
 	express.static("public")
 )
 
+
+
+
 // Importing Rotues
 import user_router from "./routes/user.routes";
 
@@ -46,13 +51,20 @@ app.use("/api/v1/users", user_router);
 
 
 
-
-// Global Error handling middleware
+// Global Error Handler
 app.use(
-	(err:any, req:Request, res:Response, next:NextFunction) => {
+	(err: any, req: Request, res: Response, next: NextFunction) => {
 		console.error(err.stack);
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("[Global Error Handler] 😞 Internal server Error!");
+
+		// If it's an ApiError, return the proper status code and message
+		if (err instanceof ApiError) {
+			return res.status(err.statusCode).json(err);
+		}
+
+		// Otherwise, return a generic internal server error
+		const apiResponse = new ApiResponse(false, StatusCodes.INTERNAL_SERVER_ERROR, "[Global Error Handler] 😞 Internal server error");
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(apiResponse);
 	}
-)
+);
 
 export default app;
