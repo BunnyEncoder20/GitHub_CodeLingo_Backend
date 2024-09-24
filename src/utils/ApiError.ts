@@ -3,16 +3,19 @@ export class ApiError extends Error {
     public statusCode: number;
     public message: string;
     public stackTrace?: string;
+    public data?: any;
 
     constructor(
         statusCode: number,
         message: string,
-        stackTrace?: string
+        stackTrace?: string,
+        data?: any
     ){
         super(message);
         this.success = false;
         this.statusCode = statusCode;
         this.message = message;
+        this.data = data;
         
         // Showing stack trace only in dev environment
         if(process.env.NODE_ENV === "development"){

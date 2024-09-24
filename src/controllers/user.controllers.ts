@@ -22,10 +22,7 @@ const register_user = async_handler(async (req, res) => {
         lang_studying : lang_studying.split(",").map((lang:string) => lang.trim()),
         isAcceptingNotifications : Boolean(isAcceptingNotifications)
     }
-    const validated_raw_user_data = zod_RawUserData.safeParse(raw_user_data)
-    if (!validated_raw_user_data.success) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, "🔴 [controller] invalid user data")
-    }
+    zod_RawUserData.parse(raw_user_data)
      
 
     // TODO:  check if user already exists

@@ -4,6 +4,7 @@ import cors from "cors";
 import { StatusCodes } from "./constants";
 import { ApiError } from "./utils/ApiError";
 import { ApiResponse } from "./utils/ApiResponse";
+import { z } from "zod";
 
 const app:Application = express();
 
@@ -59,6 +60,16 @@ app.use(
 		// If it's an ApiError, return the proper status code and message
 		if (err instanceof ApiError) {
 			return res.status(err.statusCode).json(err);
+		}
+
+		if (err instanceof z.ZodError) {
+			const zodError = new ApiError(
+				StatusCodes.BAD_REQUEST, 
+				"🟥 [Global Error Handler] Zod Error",
+				err.stack,
+				err.errors
+			);
+			return res.status(StatusCodes.BAD_REQUEST).json(zodError);
 		}
 
 		// Otherwise, return a generic internal server error
