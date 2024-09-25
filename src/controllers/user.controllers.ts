@@ -3,7 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse";
 import { ApiError } from "../utils/ApiError";
 import { upload2Cloudinary } from "../utils/cloudinary.service";
 import { StatusCodes,default_avatar_url } from "../constants";
-import { zod_RawUserData, zod_RawUserType, zod_UserInputSchema, zod_UserInputType } from "../models/zod.models";
+import { zod_RawUserData, zod_RawUserType, zod_UserInputType } from "../models/zod.models";
 
 import UserModel from "../models/users.model";
 
@@ -30,10 +30,11 @@ const register_user = async_handler(async (req, res) => {
         $or : [{ username },{ email }]
     })
     if (exists_user) {
+        // TODO: Standardize these errors (Try to throw error here and make ApiError class instance at global error handlers itself)
         throw new ApiError(StatusCodes.BAD_REQUEST, "🔴 [controller] user already exists")
     }
 
-    // TODO:  check for images and upload them to cloudinary. (Check both files in server and then again at cloudinary)
+    // DONE:  check for images and upload them to cloudinary. (Check both files in server and then again at cloudinary)
     const avatar_local_path = req.file?.path
     console.log("",req.file)
     if (!avatar_local_path) {

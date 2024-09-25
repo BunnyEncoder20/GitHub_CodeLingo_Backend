@@ -15,7 +15,7 @@ connectDB()
 
 	// listening for any errors while starting server
 	app.on("error",(err) => {
-		console.error("[server] 💀 An error occurred while running the server.\n",err)
+		console.error("[server] 💀 An error occurred while starting the server.\n",err)
 	})
 
 	// Listening for requests
