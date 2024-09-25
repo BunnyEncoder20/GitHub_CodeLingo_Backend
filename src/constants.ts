@@ -16,9 +16,17 @@ enum StatusCodes {
     INTERNAL_SERVER_ERROR = 500
 };
 
+
+// Cookies
+const cookiesOptions = {
+    httpOnly: true,
+    secure: true
+}
+
 export {
     DB_name,
     default_jwt_secret,
     StatusCodes,
-    default_avatar_url
+    default_avatar_url,
+    cookiesOptions
 }
