@@ -2,7 +2,7 @@ export class ApiError extends Error {
     public success: boolean;
     public statusCode: number;
     public message: string;
-    public stackTrace?: string;
+    public stackTrace?: any;
     public data?: any;
 
     constructor(
