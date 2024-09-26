@@ -3,7 +3,7 @@ import { StatusCodes } from "../constants";
 import { ApiError } from "../utils/ApiError";
 import { default_jwt_secret } from "../constants";
 
-import UserModel from "../models/users.model";
+import UserModel,{ User } from "../models/users.model";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 
@@ -23,7 +23,7 @@ export const verify_user = async_handler(async (req,_,next) => {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "🛑 [auth] invalid access token")
     }
 
-    // TODO: attach user data to the request object
+    // FIXME: user_data not attaching to req.user cause that field doesn't exist apparently
     req.user = user_data
     next()
 });
