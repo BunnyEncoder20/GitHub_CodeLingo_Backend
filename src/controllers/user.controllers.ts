@@ -4,10 +4,9 @@ import { ApiError } from "../utils/ApiError";
 import { upload2Cloudinary } from "../utils/cloudinary.service";
 import { StatusCodes,default_avatar_url } from "../constants";
 import { zod_RawUserData, zod_RawUserType, zod_UserInputType } from "../models/zod.models";
-import { GenerateRefreshAccessTokens } from "../utils/GenRefreshAccessTokens.util";
 import { cookiesOptions } from "../constants";
 
-import UserModel from "../models/users.model";
+import UserModel, { User } from "../models/users.model";
 
 const register_user = async_handler(async (req, res) => {
 
@@ -137,8 +136,28 @@ const login_user = async_handler(async (req, res) => {
 
 
 const logout_user = async_handler(async (req, res) => {
-    // TODO: Find the user 
-})
+    // TODO: Find the user and delete the refresh token
+    UserModel.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set : {
+                refreshToken : null
+            }
+        }
+    );
+
+    // TODO: send the response
+    return res
+    .status(StatusCodes.OK)
+    .clearCookie("access_token", cookiesOptions)
+    .clearCookie("refresh_token", cookiesOptions)
+    .json(
+        new ApiResponse(
+        true,
+        StatusCodes.OK,
+        `🟢 [controller] user ${req.user?._id} logged out successfully`
+    ));
+});
 
 export { 
     register_user,

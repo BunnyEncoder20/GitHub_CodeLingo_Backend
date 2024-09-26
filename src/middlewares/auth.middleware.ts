@@ -8,7 +8,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 
 
-export const verify_user = async_handler(async (req,res,next) => {
+export const verify_user = async_handler(async (req,_,next) => {
     const token = req.cookies?.access_token || req.header("Authorization")?.replace("Bearer ","")
     if (!token) {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "🛑 [auth] access token not found")

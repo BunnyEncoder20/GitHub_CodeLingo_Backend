@@ -14,6 +14,7 @@ export interface User extends Document {
     refreshToken:string;
     generateAccessToken:Function;
     generateRefreshToken:Function;
+    isPasswordCorrect:Function;
     createdAt? : Date;
     updatedAt? : Date;
 }
