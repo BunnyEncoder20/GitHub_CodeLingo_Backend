@@ -3,14 +3,9 @@ import { StatusCodes } from "../constants";
 import { ApiError } from "../utils/ApiError";
 import { default_jwt_secret } from "../constants";
 
+import UserModel from "../models/users.model";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import UserModel, { User } from "../models/users.model";
 
-
-// TODO: custom interface for adding user data ontp req
-interface custome_req extends Request {
-    user: User; // this is the custom interface we made in the user.models.ts
-}
 
 
 export const verify_user = async_handler(async (req,res,next) => {
@@ -31,5 +26,4 @@ export const verify_user = async_handler(async (req,res,next) => {
     // TODO: attach user data to the request object
     req.user = user_data
     next()
-
 });
