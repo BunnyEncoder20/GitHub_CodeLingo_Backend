@@ -122,8 +122,8 @@ const login_user = async_handler(async (req, res) => {
     // TODO: send user data back in cookies (secure http only cookies)
     return res
     .status(StatusCodes.OK)
-    .cookie("access token",accessToken,cookiesOptions)
-    .cookie("refresh token",user_data.refreshToken,cookiesOptions)
+    .cookie("access_token",accessToken,cookiesOptions)
+    .cookie("refresh_token",user_data.refreshToken,cookiesOptions)
     .json(
         new ApiResponse(
             true,
@@ -135,7 +135,13 @@ const login_user = async_handler(async (req, res) => {
 
 });
 
+
+const logout_user = async_handler(async (req, res) => {
+    // TODO: Find the user 
+})
+
 export { 
     register_user,
-    login_user
+    login_user,
+    logout_user
 }
