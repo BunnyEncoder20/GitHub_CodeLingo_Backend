@@ -102,7 +102,7 @@ const login_user = async_handler(async (req, res) => {
     }
 
     // TODO: check if password is correct
-    // FIXME: why is the usermodel method not working / linking properly
+    // FIXED: why is the usermodel method not working / linking properly
     const password_correct = await user_data.isPasswordCorrect(password)
     if (! password_correct ) {
         throw new ApiError(StatusCodes.CONFLICT, "🔴 [controller] password incorrect")
